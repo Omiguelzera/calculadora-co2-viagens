@@ -66,11 +66,121 @@ main {
     margin-bottom: 20px;
 }
 
+/* Map Section */
+.map-section {
+    margin-bottom: 30px;
+}
+
+.map-section h2 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
+
+.location-inputs {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+    z-index: 1;
+}
+
+.route-info {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border-left: 4px solid #2196f3;
+}
+
+.route-info.hidden {
+    display: none;
+}
+
+.route-info p {
+    margin: 8px 0;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
 .form-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
     color: var(--text-color);
+}
+
+/* Autocomplete */
+.autocomplete-wrapper {
+    position: relative;
+}
+
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-suggestions.active {
+    display: block;
+}
+
+.suggestion-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f9ff;
+}
+
+.suggestion-item.loading {
+    text-align: center;
+    color: var(--text-light);
+    cursor: default;
+}
+
+.suggestion-item.loading:hover {
+    background-color: white;
+}
+
+.suggestion-name {
+    font-weight: 600;
+    color: var(--text-color);
+    display: block;
+}
+
+.suggestion-details {
+    font-size: 0.85em;
+    color: var(--text-light);
+    margin-top: 3px;
 }
 
 .form-group input,
@@ -100,7 +210,8 @@ main {
 
 /* Buttons */
 .btn-calculate,
-.btn-reset {
+.btn-reset,
+.btn-search {
     width: 100%;
     padding: 15px;
     font-size: 1.1em;
@@ -110,6 +221,20 @@ main {
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 10px;
+}
+
+.btn-search {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+    color: white;
+}
+
+.btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-search:active {
+    transform: translateY(0);
 }
 
 .btn-calculate {
@@ -138,10 +263,9 @@ main {
 /* Result Section */
 .result {
     margin-top: 30px;
-    padding: 20px;
+    padding: 25px;
     background: #f8f9fa;
     border-radius: 12px;
-    border-left: 5px solid var(--primary-color);
     animation: slideIn 0.5s ease;
 }
 
@@ -153,56 +277,131 @@ main {
     color: var(--text-color);
     margin-bottom: 20px;
     font-size: 1.5em;
+    text-align: center;
 }
 
-.result-content {
+.trip-summary {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-.emission-value {
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 8px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.amount {
-    display: block;
-    font-size: 3em;
-    font-weight: bold;
-    color: white;
-}
-
-.unit {
-    display: block;
-    font-size: 1.2em;
-    color: rgba(255, 255, 255, 0.9);
-    margin-top: 5px;
-}
-
-.transport-info {
-    margin: 20px 0;
-}
-
-.transport-info p {
+.trip-summary p {
     margin: 10px 0;
     color: var(--text-color);
 }
 
-.comparison {
-    background: #e8f5e9;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 15px;
+/* Transport Results */
+.transport-results {
+    display: grid;
+    gap: 15px;
+    margin: 20px 0;
 }
 
-.info-text {
+.transport-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 5px solid;
+}
+
+.transport-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.transport-card.low-emission {
+    border-left-color: #2ecc71;
+}
+
+.transport-card.medium-emission {
+    border-left-color: #f39c12;
+}
+
+.transport-card.high-emission {
+    border-left-color: #e74c3c;
+}
+
+.transport-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.transport-type {
+    font-size: 1.2em;
+    font-weight: 700;
     color: var(--text-color);
-    line-height: 1.6;
+}
+
+.transport-details {
+    color: var(--text-light);
+    font-size: 0.9em;
+}
+
+.transport-emission {
+    text-align: right;
+}
+
+.emission-number {
+    font-size: 2em;
+    font-weight: bold;
+    display: block;
+    line-height: 1;
+}
+
+.emission-unit {
+    font-size: 0.9em;
+    color: var(--text-light);
+    display: block;
+    margin-top: 5px;
+}
+
+.trees-info {
+    font-size: 0.85em;
+    color: var(--text-light);
+    margin-top: 5px;
+}
+
+/* Best Option */
+.best-option {
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border-radius: 12px;
+}
+
+.best-option h3 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.best-transport-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
+}
+
+.best-transport-card .transport-type {
+    font-size: 1.5em;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.best-transport-card .emission-number {
+    color: var(--primary-color);
+    font-size: 2.5em;
 }
 
 /* Footer */
@@ -244,8 +443,21 @@ footer p {
         padding: 20px;
     }
 
-    .amount {
-        font-size: 2.5em;
+    #map {
+        height: 300px;
+    }
+
+    .transport-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .transport-emission {
+        text-align: center;
+    }
+
+    .emission-number {
+        font-size: 1.8em;
     }
 }
 
