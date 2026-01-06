@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculadora de emissão de CO2 para viagens">
+    <title>Calculadora de Emissão de CO2</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌍 Calculadora de Emissão de CO2</h1>
+            <p class="subtitle">Calcule o impacto ambiental da sua viagem</p>
+        </header>
+
+        <main>
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label for="transportType">Tipo de Transporte:</label>
+                    <select id="transportType" name="transportType" required>
+                        <option value="">Selecione...</option>
+                        <option value="carro-gasolina">Carro (Gasolina)</option>
+                        <option value="carro-diesel">Carro (Diesel)</option>
+                        <option value="carro-eletrico">Carro (Elétrico)</option>
+                        <option value="aviao-curto">Avião (Voo Curto - até 1500km)</option>
+                        <option value="aviao-longo">Avião (Voo Longo - acima de 1500km)</option>
+                        <option value="onibus">Ônibus</option>
+                        <option value="trem">Trem (Elétrico)</option>
+                        <option value="motocicleta">Motocicleta</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="distance">Distância da Viagem (km):</label>
+                    <input type="number" id="distance" name="distance" min="1" step="0.1" placeholder="Ex: 100" required>
+                </div>
+
+                <div class="form-group" id="passengersGroup" style="display: none;">
+                    <label for="passengers">Número de Passageiros:</label>
+                    <input type="number" id="passengers" name="passengers" min="1" value="1" placeholder="Ex: 2">
+                    <small>A emissão será dividida pelo número de passageiros</small>
+                </div>
+
+                <button type="submit" class="btn-calculate">Calcular Emissão</button>
+            </form>
+
+            <div id="result" class="result hidden">
+                <h2>Resultado:</h2>
+                <div class="result-content">
+                    <div class="emission-value">
+                        <span id="emissionAmount" class="amount">0</span>
+                        <span class="unit">kg de CO2</span>
+                    </div>
+                    <div class="transport-info">
+                        <p><strong>Tipo de transporte:</strong> <span id="transportName"></span></p>
+                        <p><strong>Distância percorrida:</strong> <span id="distanceTraveled"></span> km</p>
+                    </div>
+                    <div class="comparison">
+                        <p class="info-text">💡 Para compensar essa emissão, seria necessário plantar aproximadamente <strong><span id="treesNeeded">0</span> árvores</strong>.</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-reset" onclick="resetCalculator()">Nova Consulta</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Calculadora educacional - Valores são estimativas médias</p>
+            <p>Desenvolvido com 💚 para um planeta mais sustentável</p>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
